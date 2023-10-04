@@ -60,3 +60,26 @@ jobs:
         with:
           path: wp
           key: composer-node-build-cache-${{ github.run_number }}
+
+  deploy:
+    runs-on: ubuntu-22.04
+
+    needs: [build-composer, build-node]
+
+    steps:
+      - name: Use Node Built cache
+        uses: actions/cache@v3
+        with:
+          path: wp
+          key: composer-node-build-cache-${{ github.run_number }}
+
+      - name: Deploy via SSH
+        run: |
+          ls -la
+          cd wp/wp-content/themes/wis-test-theme/assets/build/styles
+          ls -la
+          # rsync
+
+      - name: Set Permissions
+        run: |
+          # chmod
