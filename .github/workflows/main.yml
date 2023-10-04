@@ -73,13 +73,34 @@ jobs:
           path: wp
           key: composer-node-build-cache-${{ github.run_number }}
 
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo -e "Host *\n    StrictHostKeyChecking no" > ~/.ssh/config
+
       - name: Deploy via SSH
         run: |
-          ls -la
-          cd wp/wp-content/themes/wis-test-theme/assets/build/styles
-          ls -la
-          # rsync
+          echo "Deploying to ${SERVER_USER}@${SERVER_IP}:${SERVER_PATH} -p ${SERVER_PORT}"
+          ssh ${SERVER_USER}@${SERVER_IP} -p ${SERVER_PORT} mkdir -p ${SERVER_PATH}
+          rsync -og \
+          --rsh="ssh -p ${SERVER_PORT}" \
+          --chown=${SERVER_USER} \
+          --chmod=Dug=rwx,Fug=rw \
+          --checksum \
+          --recursive \
+          --verbose \
+          --compress \
+          --links \
+          --delete-after \
+          --exclude ".git*" \
+          --exclude "*/node_modules/" \
+          --exclude "backups/" \
+          --exclude "logs/*" \
+          --exclude "wp-content/cache" \
+          --exclude "wp-content/languages" \
+          --exclude "wp-content/uploads" \
+          --exclude "wp-config.php" \
+          wp ${SERVER_USER}@${SERVER_IP}:${SERVER_PATH}
 
-      - name: Set Permissions
-        run: |
-          # chmod
