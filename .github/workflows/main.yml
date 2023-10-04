@@ -32,3 +32,31 @@ jobs:
         with:
           path: wp
           key: composer-build-cache-${{ github.run_number }}
+
+  build-node:
+    runs-on: ubuntu-22.04
+
+    needs: [build-composer]
+
+    steps:
+      - name: Use Composer Built cache
+        uses: actions/cache@v3
+        with:
+          path: wp
+          key: composer-build-cache-${{ github.run_number }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install npm Dependencies
+        run: |
+          npm run install-prod --prefix wp/wp-content/themes/wis-test-theme
+          rm -rf wp/wp-content/themes/wis-test-theme/node_modules
+
+      - name: Save Node Built cache
+        uses: actions/cache@v3
+        with:
+          path: wp
+          key: composer-node-build-cache-${{ github.run_number }}
