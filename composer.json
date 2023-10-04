@@ -1,0 +1,58 @@
+{
+  "name": "yuriipavlov/wis-devops-test",
+  "description": "Default WordPress Foundation",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
+    },
+    {
+      "type": "git",
+      "url": "git@github.com:yuriipavlov/wis-test-theme.git"
+    }
+  ],
+  "require": {
+    "php": ">=8.1",
+    "johnpbloch/wordpress": "6.3.*",
+    "yuriipavlov/wis-test-theme": "dev-main",
+    "wpackagist-plugin/svg-support": "2.5.5"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-latest",
+    "wpackagist-plugin/query-monitor": "^3.13.1"
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "discard-changes": true,
+    "allow-plugins": {
+      "composer/installers": true,
+      "johnpbloch/wordpress-core-installer": true
+    }
+  },
+  "extra": {
+    "installer-paths": {
+      "wp/wp-content/mu-plugins/{$name}": [
+        "type:wordpress-muplugin"
+      ],
+      "wp/wp-content/plugins/{$name}": [
+        "type:wordpress-plugin"
+      ],
+      "wp/wp-content/themes/{$name}": [
+        "type:wordpress-theme"
+      ]
+    },
+    "wordpress-install-dir": "wp"
+  },
+  "scripts": {
+    "update-dev": [
+      "composer update",
+      "cd wp/wp-content/themes/wis-test-theme && composer update"
+    ],
+    "update-prod": [
+      "composer update --no-dev --no-interaction --optimize-autoloader",
+      "cd wp/wp-content/themes/wis-test-theme && composer update --no-dev --no-interaction --optimize-autoloader"
+    ]
+  }
+}
