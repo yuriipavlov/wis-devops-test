@@ -31,7 +31,7 @@ mkdir -p "$BACKUPS_DIR"/"$MODE"
 cd "$WP_DIR"
 
 # Make database backup via WP_CLI
-wp --allow-root db export "$BACKUPS_DIR"/"$MODE"/database-"$DATE_FILENAME".sql
+php /usr/local/bin/wp --allow-root db export "$BACKUPS_DIR"/"$MODE"/database-"$DATE_FILENAME".sql
 
 # Make uploads folder archive
 tar -cf - -C wp-content/ uploads > "$BACKUPS_DIR"/"$MODE"/"$MODE"-"$DATE_FILENAME".tar
