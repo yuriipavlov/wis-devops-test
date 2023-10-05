@@ -107,5 +107,5 @@ jobs:
           --exclude "wp-content/languages" \
           --exclude "wp-content/uploads" \
           --exclude "wp-config.php" \
-          wp ${SERVER_USER}@${SERVER_IP}:${SERVER_PATH}
+          wp/ ${SERVER_USER}@${SERVER_IP}:${SERVER_PATH}
 
