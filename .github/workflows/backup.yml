@@ -41,5 +41,9 @@ jobs:
           --delete-after \
           bash/start-backup.sh ${SERVER_USER}@${SERVER_IP}:~/
 
+      - name: Run backup
+        run: |
+          ssh ${SERVER_USER}@${SERVER_IP} -p ${SERVER_PORT} "bash ~/start-backup.sh"
+
 
 
