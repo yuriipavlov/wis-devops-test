@@ -1,0 +1,45 @@
+name: WordPress project Backup
+
+on:
+  workflow_dispatch: {}
+
+env:
+  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+  SERVER_USER: ${{ vars.SERVER_USER }}
+  SERVER_IP: ${{ vars.SERVER_IP }}
+  SERVER_PATH: ${{ vars.SERVER_PATH }}
+  SERVER_PORT: ${{ vars.SERVER_PORT }}
+  BACKUP_DIR: ~/backups
+
+jobs:
+  run-backup:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo -e "Host *\n    StrictHostKeyChecking no" > ~/.ssh/config
+
+      - name: Update backup script
+        run: |
+          ssh ${SERVER_USER}@${SERVER_IP} -p ${SERVER_PORT} mkdir -p ${BACKUP_DIR}
+          rsync -og \
+          --rsh="ssh -p ${SERVER_PORT}" \
+          --chown=${SERVER_USER} \
+          --chmod=Dug=rwx,Fug=rwx \
+          --checksum \
+          --recursive \
+          --verbose \
+          --compress \
+          --links \
+          --delete-after \
+          bash/start-backup.sh ${SERVER_USER}@${SERVER_IP}:~/
+
+
+
