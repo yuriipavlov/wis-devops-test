@@ -35,3 +35,6 @@ The system has automatic backups. Launched by a cronjob. By default, daily and w
 4. Check crontab file in `crontab -e` - change cronjob time if it needs.
 
 Backups will appear in the `~/backups` folder, logs in the `~/logs` folder
+
+## Tests
+E2E test `sheck_website.py` runs every time after deploy. It checks website return status code. If it non '200' - test fails.
