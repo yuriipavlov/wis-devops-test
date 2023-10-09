@@ -109,3 +109,28 @@ jobs:
           --exclude "wp-config.php" \
           wp/ ${SERVER_USER}@${SERVER_IP}:${SERVER_PATH}
 
+  e2e-test:
+    runs-on: ubuntu-22.04
+
+    needs: [build-composer, build-node, deploy]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node Built cache
+        uses: actions/cache@v3
+        with:
+          path: wp
+          key: composer-node-build-cache-${{ github.run_number }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10
+
+      - name: Install requests library
+        run: pip install requests
+
+      - name: Check Website Status
+        run: python tests/check_website.py
