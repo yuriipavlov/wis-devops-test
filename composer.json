@@ -13,13 +13,13 @@
   ],
   "require": {
     "php": ">=8.0",
-    "johnpbloch/wordpress": "6.3.*",
-    "yuriipavlov/wis-test-theme": "dev-main",
+    "johnpbloch/wordpress": "6.3.1",
+    "yuriipavlov/wis-test-theme": "dev-test-lock",
     "wpackagist-plugin/svg-support": "2.5.5"
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest",
-    "wpackagist-plugin/query-monitor": "^3.13.1"
+    "wpackagist-plugin/query-monitor": "3.13.1"
   },
   "config": {
     "optimize-autoloader": true,
